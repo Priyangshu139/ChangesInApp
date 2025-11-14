@@ -26,7 +26,6 @@ import com.dineout.code.hall.DB.Menu;
 
 import com.dineout.R;
 
-import com.dineout.code.reporting.EndOfDay_EventHandler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,16 +71,6 @@ public class ManagerInterface extends BaseActivity {
             public void onClick(View V) {
                 Intent myIntent = new Intent(ManagerInterface.this,com.dineout.code.billing.PendingPayments.class);
                 startActivity(myIntent);
-            }
-        });
-
-        Button button6 = (Button) findViewById(R.id.button6);
-        button6.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View V)
-            {
-                EndOfDay_EventHandler handler = new EndOfDay_EventHandler(context,null);
-                handler.HandleCloseDayEvent();
-                Toast.makeText(ManagerInterface.this, "Notification sent to Reporting Module",Toast.LENGTH_SHORT).show();
             }
         });
 

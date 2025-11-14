@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.dineout.R;
@@ -34,7 +32,6 @@ All functionalities corresponding to buttons
 */
 
 public class AdminPanelActivity extends BaseActivity {
-    private Button notificationButton;
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
 
@@ -45,52 +42,17 @@ public class AdminPanelActivity extends BaseActivity {
     private final String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     private final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
-    static ArrayList<NotificationClass> notf = new ArrayList<>();
     static ArrayList<Item> itm = new ArrayList<>();
-    static ArrayList<String> keys = new ArrayList<>();
-    static Boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_activity_admin_menu);
 
-        notificationButton = findViewById(R.id.ViewNotificationsButton301);
         checkdate();
-
-        notificationButton.setBackgroundResource(R.drawable.mybutton);
-        notificationButton.setTextColor(getResources().getColor(R.color.black));
-
-        notificationButton.setOnClickListener(v -> {
-            Intent i = new Intent(getApplicationContext(), Notifications.class);
-            startActivity(i);
-        });
 
         // Firebase database reference
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("notification");
-
-        // Listen for notification changes
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    NotificationClass notification = dsp.getValue(NotificationClass.class);
-                    if (notification != null && notification.getTime() != null && notification.getItemName() != null) {
-                        if (!notification.isRead()) {
-                            notificationButton.setText("New Notification");
-                            notificationButton.setBackgroundColor(getResources().getColor(R.color.red));
-                            notificationButton.setTextColor(getResources().getColor(R.color.white));
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Database Error: ", databaseError.toString());
-            }
-        });
     }
 
     // Navigation methods
@@ -101,33 +63,10 @@ public class AdminPanelActivity extends BaseActivity {
     public void onClickReg4(View v) { startActivity(new Intent(this, AddTableActivity.class)); }
     public void onClickReg5(View v) { startActivity(new Intent(this, AddMenuItemActivity.class)); }
     public void onClickReg6(View v) { startActivity(new Intent(this, EndOfWeekActivitiy.class)); }
-    public void onClickReg7(View v) { startActivity(new Intent(this, Notifications.class)); }
 
     @Override
     protected void onResume() {
         super.onResume();
-        notificationButton.setBackgroundResource(R.drawable.mybutton);
-        notificationButton.setTextColor(getResources().getColor(R.color.black));
-        notificationButton.setText("Notifications");
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    NotificationClass notification = dsp.getValue(NotificationClass.class);
-                    if (notification != null && notification.getTime() != null && notification.getItemName() != null) {
-                        if (!notification.isRead()) {
-                            notificationButton.setText("New Notification");
-                            notificationButton.setBackgroundColor(getResources().getColor(R.color.red));
-                            notificationButton.setTextColor(getResources().getColor(R.color.white));
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
     }
 
     @Override
@@ -174,35 +113,11 @@ public class AdminPanelActivity extends BaseActivity {
         });
     }
 
-    // Inventory & notification checks
+    // Inventory checks
     public void checkdb() {
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("notification");
-
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String previousKey) {
-                keys.add(dataSnapshot.getKey());
-                notf.add(dataSnapshot.getValue(NotificationClass.class));
-            }
-
-            @Override public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {}
-            @Override public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
-            @Override public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {}
-            @Override public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
 
         databaseReference = firebaseDatabase.getReference("Inventory");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                removenotif();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
-
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String previousKey) {
@@ -214,21 +129,5 @@ public class AdminPanelActivity extends BaseActivity {
             @Override public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-    }
-
-    // Remove resolved notifications
-    public void removenotif() {
-        for (int i = 0; i < notf.size(); i++) {
-            for (int j = 0; j < itm.size(); j++) {
-                if (notf.get(i).getItemName().equals(itm.get(j).getName())) {
-                    if (Integer.parseInt(itm.get(j).getQuantity()) > Integer.parseInt(itm.get(j).getThreshold())) {
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("notification")
-                                .child(keys.get(i))
-                                .removeValue();
-                    }
-                }
-            }
-        }
     }
 }
