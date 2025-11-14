@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "338549918817",
+    "project_id": "restaurantmanagementsyst-7e4f4",
+    "storage_bucket": "restaurantmanagementsyst-7e4f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338549918817:android:bc4411147df576a5cf2e20",
+        "android_client_info": {
+          "package_name": "com.dineout"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "your-api-key"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
