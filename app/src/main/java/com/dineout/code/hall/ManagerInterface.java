@@ -163,23 +163,6 @@ public class ManagerInterface extends BaseActivity {
             }
         });
 
-        Button button9 = (Button) findViewById(R.id.button9);
-        button9.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View V) {
-                Intent myIntent = new Intent(ManagerInterface.this, Tracking.class);
-                startActivity(myIntent);
-            }
-        });
-
-      //  Button button10 = (Button) findViewById(R.id.button10);
-       // button10.setOnClickListener(new View.OnClickListener() {
-       //     public void onClick(View V) {
-       //         Toast.makeText(ManagerInterface.this, "Reordered Food",Toast.LENGTH_SHORT).show();
-       //     }
-       // }
-
-
-
         Button button12 = (Button) findViewById(R.id.button12);
         button12.setOnClickListener(new View.OnClickListener() {
             public void onClick(View V) {
@@ -188,7 +171,6 @@ public class ManagerInterface extends BaseActivity {
                 startActivity(myIntent);
             }
         });
-
     }
 
     @Override

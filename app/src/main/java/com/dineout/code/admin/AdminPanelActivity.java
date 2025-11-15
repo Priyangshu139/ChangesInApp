@@ -59,7 +59,6 @@ public class AdminPanelActivity extends BaseActivity {
     public void onClickReg(View v) { startActivity(new Intent(this, AddItem.class)); }
     public void onClickReg1(View v) { startActivity(new Intent(this, IngredientsList.class)); }
     public void onClickReg2(View v) { startActivity(new Intent(this, AddEmployeeActivity.class)); }
-    public void onClickReg3(View v) { startActivity(new Intent(this, AddTabletActivity.class)); }
     public void onClickReg4(View v) { startActivity(new Intent(this, AddTableActivity.class)); }
     public void onClickReg5(View v) { startActivity(new Intent(this, AddMenuItemActivity.class)); }
     public void onClickReg6(View v) { startActivity(new Intent(this, EndOfWeekActivitiy.class)); }

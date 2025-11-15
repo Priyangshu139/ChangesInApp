@@ -73,18 +73,6 @@
             android:text="Add Table" />
 
         <Button
-            android:id="@+id/AddTabletButton301"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/mybutton"
-            android:onClick="onClickReg3"
-            android:text="Add Tablet" />
-
-
-        <Button
             android:id="@+id/SetEndOfWeekButton301"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
