@@ -1,6 +1,10 @@
 package com.dineout.code.admin;
 
 import com.dineout.R;
+import com.dineout.code.data.LocalDataManager;
+import com.dineout.code.order.Item;
+
+import java.util.List; // Added import for List
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,16 +14,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 /* Making a new inventory item, validating input, and pushing to Firebase */
 public class AddItem extends AppCompatActivity {
+
+    private LocalDataManager localDataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_activity_add_item);
+        localDataManager = new LocalDataManager(this);
     }
 
     public void btnBlick(View v) {
@@ -74,8 +78,10 @@ public class AddItem extends AppCompatActivity {
                     threshold.getText().toString()
             );
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-            ref.child("Inventory").child(name.getText().toString()).setValue(i);
+            // Retrieve existing inventory, add new item, and save back to local storage
+            List<Item> inventory = localDataManager.loadData("inventory", Item.class);
+            inventory.add(i);
+            localDataManager.saveData("inventory", inventory);
 
             Toast.makeText(this, "Item has been added to the Inventory", Toast.LENGTH_SHORT).show();
 
